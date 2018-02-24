@@ -1,0 +1,31 @@
+---
+- name: copy dockerfile and image files
+  copy:
+    src: ./docker/
+    dest: "{{dockerfile_path}}"
+    owner: root
+    group: root
+    mode: preserve
+  register: dockerfile
+
+- name: build image
+  docker_image:
+    path: "{{dockerfile_path}}"
+    name: "{{image_name}}:{{image_version}}"
+    force: yes
+  register: teamspeak_image
+  when: dockerfile.changed
+
+- include: create_volumes.yml
+
+- name: Create systemd unit file
+  template: src=teamspeak.systemd.j2 dest=/etc/systemd/system/teamspeak.service owner=root group=root mode=0550
+  register: teamspeak_service
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  when: teamspeak_service.changed
+
+- name: Restart service
+  service: name=teamspeak state=restarted enabled=yes
+  when: teamspeak_image.changed or teamspeak_service.changed

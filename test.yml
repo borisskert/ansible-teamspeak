@@ -1,0 +1,28 @@
+---
+- hosts: test_machine
+  become: yes
+
+  pre_tasks:
+  - apt:
+      name: python-docker
+      update_cache: yes
+
+  post_tasks:
+  - apt:
+      name: python-docker
+      state: absent
+      purge: yes
+
+  roles:
+  - role: '.'
+#    image_name: local/teamspeak-server
+#    image_version: 3.1.0
+#    interface: 0.0.0.0
+    default_port: 9987
+    filetransfer_port: 30033
+    serverquery_port: 10011
+#    weblist_port: 2010
+#    tsdns_port: 41144
+#    accounting_port: 2008
+    data_volume: /srv/docker/teamspeak
+    log_volume: /var/log/teamspeak
