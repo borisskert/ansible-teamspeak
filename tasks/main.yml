@@ -1,31 +1,24 @@
 ---
-- name: copy dockerfile and image files
-  copy:
-    src: ./docker/
-    dest: "{{dockerfile_path}}"
-    owner: root
-    group: root
-    mode: preserve
-  register: dockerfile
-
-- name: build image
-  docker_image:
-    path: "{{dockerfile_path}}"
-    name: "{{image_name}}:{{image_version}}"
-    force: yes
-  register: teamspeak_image
-  when: dockerfile.changed
-
+- include: build_dockerimage.yml
 - include: create_volumes.yml
+- include: template_compose_file.yml
 
 - name: Create systemd unit file
-  template: src=teamspeak.systemd.j2 dest=/etc/systemd/system/teamspeak.service owner=root group=root mode=0550
-  register: teamspeak_service
+  template:
+    src: systemd.unitfile.j2
+    dest: "/etc/systemd/system/{{service_name}}.service"
+    owner: root
+    group: root
+    mode: 0554
+  register: systemd_unitfile
 
 - name: Reload systemd
   command: systemctl daemon-reload
-  when: teamspeak_service.changed
+  when: systemd_unitfile.changed
 
 - name: Restart service
-  service: name=teamspeak state=restarted enabled=yes
-  when: teamspeak_image.changed or teamspeak_service.changed
+  service:
+    name: "{{service_name}}"
+    state: restarted
+    enabled: yes
+  when: dockerimage.changed or dockercompose_file.changed or systemd_unitfile.changed

@@ -1,0 +1,38 @@
+version: '3.1'
+services:
+  {{service_name}}:
+    image: {{docker_image.name}}:{{docker_image.tag}}
+    container_name: {{docker_container.name}}
+{% if docker_container.volumes.data != ""
+   or docker_container.volumes.log != "" %}
+    volumes:
+{% if docker_container.volumes.data != "" %}
+     - {{docker_container.volumes.data}}:/data
+{% endif %}
+{% if docker_container.volumes.log != "" %}
+     - {{docker_container.volumes.log}}:/data/logs
+{% endif %}
+{% endif %}
+{% if docker_container.publish.ports.default != ""
+   or docker_container.publish.ports.filetransfer != ""
+   or docker_container.publish.ports.serverquery != ""
+   or docker_container.publish.ports.tsdns != "" %}
+    ports:
+{% if docker_container.publish.ports.default != "" %}
+     - {{docker_container.publish.interface}}:{{docker_container.publish.ports.default}}:9987/udp
+{% endif %}
+{% if docker_container.publish.ports.filetransfer != "" %}
+     - {{docker_container.publish.interface}}:{{docker_container.publish.ports.filetransfer}}:30033/tcp
+{% endif %}
+{% if docker_container.publish.ports.serverquery != "" %}
+     - {{docker_container.publish.interface}}:{{docker_container.publish.ports.serverquery}}:10011/tcp
+{% endif %}
+{% if docker_container.publish.ports.tsdns != "" %}
+     - {{docker_container.publish.interface}}:{{docker_container.publish.ports.tsdns}}:41144/tcp
+{% endif %}
+{% endif %}
+    networks:
+     - {{service_name}}_network
+
+networks:
+  {{service_name}}_network:

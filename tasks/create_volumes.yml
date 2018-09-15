@@ -1,20 +1,10 @@
 ---
-- name: create data directory
-  file: path={{data_volume}} state=directory owner=root group=root mode=755
-  when: not(
-            (data_volume is undefined)
-            or
-            (data_volume is none)
-            or
-            (data_volume | trim == '')
-          )
-
-- name: create log directory
-  file: path={{log_volume}} state=directory owner=root group=root mode=755
-  when: not(
-            (log_volume is undefined)
-            or
-            (log_volume is none)
-            or
-            (log_volume | trim == '')
-          )
+- name: create volume directories
+  file:
+    path: "{{item.value}}"
+    state: directory
+    owner: "{{user_uid}}"
+    group: "{{user_uid}}"
+    mode: 0775
+  when: item.value is defined and item.value != ''
+  with_dict: "{{docker_container.volumes}}"

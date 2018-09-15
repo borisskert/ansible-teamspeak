@@ -1,30 +1,21 @@
 ---
-image_name: local/teamspeak-server
-image_version: 3.1.0
+version: 3.1.0
+artifact_checksum: 9f18cff600b9ce82a26ab788633cd5004bbe8c86963507efd3704c085f50a391
 
-container_name: teamspeak.service
+volumes:
+  data: ''
+  log: ''
 
-dockerfile_path: /opt/teamspeak-server/docker
+publish:
+  interface: 0.0.0.0
+  # default  port (UDP incomming): 9987
+  default_port: ''
 
-data_volume: ''
-log_volume: ''
+  # filetransfer port (TCP incomming): 30033
+  filetransfer_port: ''
 
-interface: 0.0.0.0
+  # serverquery port (TCP incomming): 10011
+  serverquery_port: ''
 
-# default  port (UDP incomming): 9987
-default_port: ''
-
-# filetransfer port (TCP incomming): 30033
-filetransfer_port: ''
-
-# serverquery port (TCP incomming): 10011
-serverquery_port: ''
-
-# weblist port (UDP outgoing): 2010
-weblist_port: ''
-
-# tsdns port (TCP incomming): 41144
-tsdns_port: ''
-
-# accounting port (TCP outgoing): 2008
-accounting_port: ''
+  # tsdns port (TCP incomming): 41144
+  tsdns_port: ''

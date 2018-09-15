@@ -15,14 +15,14 @@
 
   roles:
   - role: '.'
-#    image_name: local/teamspeak-server
-#    image_version: 3.1.0
-#    interface: 0.0.0.0
-    default_port: 9987
-    filetransfer_port: 30033
-    serverquery_port: 10011
-#    weblist_port: 2010
-#    tsdns_port: 41144
-#    accounting_port: 2008
-    data_volume: /srv/docker/teamspeak
-    log_volume: /var/log/teamspeak
+    version: 3.1.0
+    artifact_checksum: 9f18cff600b9ce82a26ab788633cd5004bbe8c86963507efd3704c085f50a391
+    publish:
+      interface: 0.0.0.0
+      default_port: 9987
+      filetransfer_port: 30033
+      serverquery_port: 10011
+      tsdns_port: 41144
+    volumes:
+      data: /srv/docker/teamspeak
+      log: /var/log/teamspeak

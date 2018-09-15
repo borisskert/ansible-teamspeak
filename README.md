@@ -1,66 +1,68 @@
-ansible-teamspeak
-=================
+# ansible-teamspeak
 
 Installs teamspeak-server as docker container.
 
-System requirements
--------------------
+## System requirements
 
 * Docker
+* docker-compose
 * Systemd
 
-Role requirements
------------------
+## Role requirements
 
 * python-docker package
 
-Tasks
------
+## Tasks
 
 * Build docker image locally
 * Create volume paths for docker container
 * Setup systemd unit file
 * Start/Restart service
 
-Role parameters
---------------
+## Role parameters
 
 | Variable      | Type | Mandatory? | Default | Description           |
 |---------------|------|------------|---------|-----------------------|
-| image_name    | text | no         | local/teamspeak-server | Docker image name    |
-| image_version | text | no         | 3.1.0                  | Docker image version |
-| interface     | ip address | no   | 0.0.0.0                | Mapped network for web-interface ports |
-| default_port  | port       | no   | <empty>                | Default port (UDP incomming): 9987    |
-| filetransfer_port | port   | no   | <empty>                | Filetransfer port (TCP incomming): 30033 |
-| serverquery_port  | port   | no   | <empty>                | Serverquery port (TCP incomming): 10011  |
-| weblist_port      | port   | no   | <empty>                | Weblist port (UDP outgoing): 2010        |
-| tsdns_port        | port   | no   | <empty>                | Tsdns port (TCP incomming): 41144        |
-| accounting_port   | port   | no   | <empty>                | Accounting port (TCP outgoing): 2008     |
-| data_volume       | path   | no   | <empty>                | Path to data volume                      |
-| log_volume        | path   | no   | <empty>                | Path to log volume                       |
+| version       | text | no         | 3.3.1   | Teamspeak server version |
+| publish.interface | ip address | no | 0.0.0.0 | Mapped network for web-interface ports |
+| publish.default_port | port    | no | <empty> | Default port (UDP incomming): 9987     |
+| publish.filetransfer_port | port | no | <empty> | Filetransfer port (TCP incomming): 30033 |
+| publish.serverquery_port  | port | no | <empty> | Serverquery port (TCP incomming): 10011  |
+| publish.tsdns_port        | port | no | <empty> | Tsdns port (TCP incomming): 41144        |
+| volumes.data              | path | no | <empty> | Path to data volume                      |
+| volumes.log               | path | no | <empty> | Path to log volume                       |
 
-Example Playbook
-----------------
+## Usage
+
+### requirements.yml
+
+```
+- name: install-teamspeak
+  src: https://github.com/flandiGT/ansible-teamspeak.git
+  scm: git
+```
+
+### Example Playbook
 
 Usage (without parameters):
 
     - hosts: servers
       roles:
-         - { role: install-docker-teamspeak }
+         - { role: install-teamspeak }
 
 Usage (with parameters):
 
     - hosts: servers
       roles:
-      - role: install-docker-teamspeak
-        image_name: local/teamspeak-server
-        image_version: 3.1.0
-        interface: 0.0.0.0
-        default_port: 9987
-        filetransfer_port: 30033
-        serverquery_port: 10011
-        weblist_port: 2010
-        tsdns_port: 41144
-        accounting_port: 2008
-        data_volume: /srv/docker/teamspeak
-        log_volume: /var/log/teamspeak
+      - role: install-teamspeak
+        version: 3.3.1
+        artifact_checksum: b3891341a9ff4c4b6b0173ac57f1d64d4752550c95eeb26d2518ac2f5ca9fbc1
+        publish:
+          interface: 0.0.0.0
+          default_port: 9987
+          filetransfer_port: 30033
+          serverquery_port: 10011
+          tsdns_port: 41144
+        volumes:
+          data: /srv/docker/teamspeak
+          log: /var/log/teamspeak

@@ -1,5 +1,4 @@
-FROM alpine:3.7
-MAINTAINER flandiGT <https://github.com/flandiGT/ansible-teamspeak>
+FROM alpine:3.8
 
 ENV LANG=C.UTF-8
 
@@ -11,9 +10,16 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
     ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     apk add --no-cache --virtual=.build-dependencies wget ca-certificates && \
-    wget \
-        "https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub" \
-        -O "/etc/apk/keys/sgerrand.rsa.pub" && \
+    echo \
+        "-----BEGIN PUBLIC KEY-----\
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApZ2u1KJKUu/fW4A25y9m\
+        y70AGEa/J3Wi5ibNVGNn1gT1r0VfgeWd0pUybS4UmcHdiNzxJPgoWQhV2SSW1JYu\
+        tOqKZF5QSN6X937PTUpNBjUvLtTQ1ve1fp39uf/lEXPpFpOPL88LKnDBgbh7wkCp\
+        m2KzLVGChf83MS0ShL6G9EQIAUxLm99VpgRjwqTQ/KfzGtpke1wqws4au0Ab4qPY\
+        KXvMLSPLUp7cfulWvhmZSegr5AdhNw5KNizPqCJT8ZrGvgHypXyiFvvAH5YRtSsc\
+        Zvo9GI2e2MaZyo9/lvb+LbLEJZKEQckqRj4P26gmASrZEPStwc+yqy1ShHLA0j6m\
+        1QIDAQAB\
+        -----END PUBLIC KEY-----" | sed 's/   */\n/g' > "/etc/apk/keys/sgerrand.rsa.pub" && \
     wget \
         "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
         "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
@@ -38,15 +44,15 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
 
 # Install teamspeak-server
 
-EXPOSE 9987/udp 10011 30033
+EXPOSE 9987/udp 10011 30033 41144
 
 ENV \
-	TS_DIR="/opt/teamspeak" \
-	TS_RELEASE="http://dl.4players.de/ts/releases/3.1.0/teamspeak3-server_linux_amd64-3.1.0.tar.bz2" \
-	TS_SHA="9f18cff600b9ce82a26ab788633cd5004bbe8c86963507efd3704c085f50a391" \
-	TS_ARTIFACT="teamspeak.tar.bz2" \
-	TS_DATA="/data" \
-	TS3SERVER_LICENSE="accept"
+    TS_DIR="/opt/teamspeak" \
+    TS_RELEASE="http://dl.4players.de/ts/releases/{{version}}/teamspeak3-server_linux_amd64-{{version}}.tar.bz2" \
+    TS_SHA="{{artifact_checksum}}" \
+    TS_ARTIFACT="teamspeak.tar.bz2" \
+    TS_DATA="/data" \
+    TS3SERVER_LICENSE="accept"
 
 RUN apk --update add tar \
 	&& mkdir -p "${TS_DIR}" \
@@ -57,6 +63,13 @@ RUN apk --update add tar \
 	&& rm -r "${TS_DIR}/doc" "${TS_DIR}/redist" "${TS_DIR}/serverquerydocs" "${TS_DIR}/tsdns"
 
 RUN mkdir -p ${TS_DATA}
+
+# Create non-root user
+RUN adduser -DHs /sbin/nologin -u {{user_uid}} teamspeak \
+    && mkdir -p "${TS_DATA}/logs" \
+    && chown -R teamspeak:teamspeak "${TS_DATA}" \
+    && chown -R teamspeak:teamspeak "${TS_DIR}"
+
 VOLUME ${TS_DATA}
 RUN for file in $(find ${TS_DATA} -mindepth 1 -maxdepth 1); do \
 	ln -s "${file}" $(echo $file | sed 's@^'"${TS_DATA}"'@'"${TS_DIR}"'@g') \
@@ -66,5 +79,7 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./handle_sqlite_location.sh /handle_sqlite_location.sh
+
+USER teamspeak
 
 ENTRYPOINT ["/entrypoint.sh"]

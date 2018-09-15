@@ -1,0 +1,34 @@
+---
+service_name: teamspeak
+
+docker:
+  workingdir: "/opt/{{service_name}}/docker"
+  force_build: no
+  cli_executible: /usr/bin/docker
+  compose_executible: /usr/local/bin/docker-compose
+
+docker_compose:
+  workingdir: "/opt/{{service_name}}/docker-compose"
+  filename: docker-compose.yml
+  cli_executible: /usr/local/bin/docker-compose
+
+docker_image:
+  name: "local/{{service_name}}"
+  tag: "{{version}}"
+  path: "{{docker.workingdir}}/image"
+  force_build: "{{docker.force_build}}"
+
+docker_container:
+  name: "{{service_name}}.service"
+  volumes:
+    data: "{{volumes.data}}"
+    log: "{{volumes.log}}"
+  publish:
+    interface: "{{publish.interface}}"
+    ports:
+      default: "{{publish.default_port}}"
+      filetransfer: "{{publish.filetransfer_port}}"
+      serverquery: "{{publish.serverquery_port}}"
+      tsdns: "{{publish.tsdns_port}}"
+
+user_uid: 1000
