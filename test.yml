@@ -15,8 +15,8 @@
 
   roles:
   - role: '.'
-    version: 3.1.0
-    artifact_checksum: 9f18cff600b9ce82a26ab788633cd5004bbe8c86963507efd3704c085f50a391
+    version: 3.3.1
+    artifact_checksum: b3891341a9ff4c4b6b0173ac57f1d64d4752550c95eeb26d2518ac2f5ca9fbc1
     publish:
       interface: 0.0.0.0
       default_port: 9987
