@@ -1,28 +1,41 @@
 [Install]
-WantedBy = multi-user.target
+WantedBy=multi-user.target
 
 [Unit]
-Description = {{service_name}} service
-After       = docker.service
-Requires    = docker.service
+Description={{service_name}} service
+After=docker.service
+Requires=docker.service
 
 [Service]
-ExecStartPre = -{{docker.cli_executible}} build --tag {{docker_image.name}}:{{docker_image.tag}} {{docker.workingdir}}
-ExecStartPre = -{{docker.compose_executible}} --project-directory {{docker_compose.workingdir}} \
-                               --file {{docker_compose.workingdir}}/{{docker_compose.filename}} \
-                               --project-name {{service_name}} \
-                               down --remove-orphans
+ExecStartPre=-/usr/bin/docker rm -f %n
 
-ExecStart = {{docker.compose_executible}} --project-directory {{docker_compose.workingdir}} \
-                           --file {{docker_compose.workingdir}}/{{docker_compose.filename}} \
-                           --project-name {{service_name}} \
-                           up
+ExecStart=/usr/bin/docker run --name %n \
+{% if docker_container.volumes.data != "" %}
+     --volume {{docker_container.volumes.data}}:/var/ts3server \
+{% endif %}
+{% if docker_container.volumes.log != "" %}
+     --volume {{docker_container.volumes.log}}:/var/ts3server/logs \
+{% endif %}
+{% if docker_container.volumes.files != "" %}
+     --volume {{docker_container.volumes.files}}:/var/ts3server/files \
+{% endif %}
+{% if docker_container.publish.ports.default != "" %}
+     --publish {{docker_container.publish.interface}}:{{docker_container.publish.ports.default}}:9987/udp \
+{% endif %}
+{% if docker_container.publish.ports.filetransfer != "" %}
+     --publish {{docker_container.publish.interface}}:{{docker_container.publish.ports.filetransfer}}:30033/tcp \
+{% endif %}
+{% if docker_container.publish.ports.serverquery != "" %}
+     --publish {{docker_container.publish.interface}}:{{docker_container.publish.ports.serverquery}}:10011/tcp \
+{% endif %}
+{% if accept_license | bool %}
+     --env TS3SERVER_LICENSE=accept \
+{% endif %}
+            {{docker_image.name}}:{{docker_image.tag}}
 
-ExecStop  = -{{docker.compose_executible}} --project-directory {{docker_compose.workingdir}} \
-                                            --file {{docker_compose.workingdir}}/{{docker_compose.filename}} \
-                                            --project-name {{service_name}} \
-                                            down --remove-orphans
+ExecStop=-/usr/bin/docker stop %n
+ExecStopPost=-/usr/bin/docker rm -f %n
 
-Restart = always
-RestartSec = 60s
-TimeoutSec=60
+Restart=always
+RestartSec=60s
+TimeoutSec=3600

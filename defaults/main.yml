@@ -1,13 +1,14 @@
 ---
-version: 3.3.1
-artifact_checksum: b3891341a9ff4c4b6b0173ac57f1d64d4752550c95eeb26d2518ac2f5ca9fbc1
+version: 3.12
 
 volumes:
   data: ''
   log: ''
+  files: ''
 
 publish:
   interface: 0.0.0.0
+
   # default  port (UDP incomming): 9987
   default_port: ''
 
@@ -17,5 +18,4 @@ publish:
   # serverquery port (TCP incomming): 10011
   serverquery_port: ''
 
-  # tsdns port (TCP incomming): 41144
-  tsdns_port: ''
+accept_license: no

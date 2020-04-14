@@ -1,0 +1,24 @@
+---
+- hosts: test_machine
+  become: yes
+
+  roles:
+    - role: install-docker
+      storage_driver: overlay2
+      cleanup_enabled: no
+      install_pip_docker: yes
+
+    - role: install-docker-compose
+
+    - role: ansible-teamspeak
+      version: 3.12
+      accept_license: yes
+      publish:
+        interface: 0.0.0.0
+        default_port: 9987
+        filetransfer_port: 30033
+        serverquery_port: 10011
+      volumes:
+        data: /srv/docker/teamspeak/data
+        files: /var/docker/teamspeak/files
+        log: /var/log/teamspeak
