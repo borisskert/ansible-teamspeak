@@ -18,4 +18,4 @@ nc -z -w300 192.168.33.48 30033) && \
 (echo 'Netcat test: pass' && exit 0) ||
 (echo 'Netcat test: fail' && exit 1)
 
-#vagrant destroy -f
+vagrant destroy -f
