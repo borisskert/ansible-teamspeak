@@ -1,6 +1,4 @@
 ---
-service_name: teamspeak
-
 docker_image:
   name: "teamspeak"
   tag: "{{version}}"

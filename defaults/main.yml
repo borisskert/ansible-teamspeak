@@ -1,5 +1,6 @@
 ---
 version: latest
+service_name: teamspeak
 
 volumes:
   data: ''

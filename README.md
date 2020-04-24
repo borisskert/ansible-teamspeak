@@ -27,9 +27,9 @@ Installs teamspeak-server as docker container.
 | publish.default_port | port    | no | <empty> | Default port (UDP incomming): 9987     |
 | publish.filetransfer_port | port | no | <empty> | Filetransfer port (TCP incomming): 30033 |
 | publish.serverquery_port  | port | no | <empty> | Serverquery port (TCP incomming): 10011  |
-| volumes.data              | path | no | <empty> | Path to data volume                      |
-| volumes.log               | path | no | <empty> | Path to log volume                       |
-| volumes.files             | path | no | <empty> | Path to files volume                     |
+| volumes.data              | path | yes | <empty> | Path to data volume                     |
+| volumes.log               | path | yes | <empty> | Path to log volume                      |
+| volumes.files             | path | yes | <empty> | Path to files volume                    |
 
 ## Usage
 

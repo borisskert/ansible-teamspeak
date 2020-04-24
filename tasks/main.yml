@@ -1,19 +1,13 @@
 ---
+- include: check-parameters.yml
+
 - name: pull docker image
   docker_image:
     name: "{{docker_image.name}}:{{docker_image.tag}}"
     source: pull
   register: dockerimage
 
-- name: create volume directories
-  file:
-    path: "{{item.value}}"
-    state: directory
-    owner: "{{user_uid}}"
-    group: "{{user_uid}}"
-    mode: '0754'
-  when: item.value is defined and item.value != ''
-  with_dict: "{{docker_container.volumes}}"
+- include: create-volumes.yml
 
 - name: Create systemd unit file
   template:
@@ -21,7 +15,7 @@
     dest: "/etc/systemd/system/{{service_name}}.service"
     owner: root
     group: root
-    mode: '0640'
+    mode: 0640
   register: systemd_unitfile
 
 - name: Reload systemd

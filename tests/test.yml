@@ -19,6 +19,6 @@
         filetransfer_port: 30033
         serverquery_port: 10011
       volumes:
-        data: /srv/docker/teamspeak/data
-        files: /var/docker/teamspeak/files
+        data: /srv/teamspeak/data
+        files: /srv/teamspeak/files
         log: /var/log/teamspeak

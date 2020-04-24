@@ -1,0 +1,27 @@
+---
+- name: Check 'volumes' parameter
+  assert:
+    that:
+      - "volumes is defined"
+    fail_msg: "parameter 'volumes' is missing"
+
+- name: Check 'volumes.data' parameter
+  assert:
+    that:
+      - "volumes.data is defined"
+      - "volumes.data | length > 0"
+    fail_msg: "parameter 'volumes.data' is missing"
+
+- name: Check 'volumes.log' parameter
+  assert:
+    that:
+      - "volumes.log is defined"
+      - "volumes.log | length > 0"
+    fail_msg: "parameter 'volumes.log' is missing"
+
+- name: Check 'volumes.files' parameter
+  assert:
+    that:
+      - "volumes.files is defined"
+      - "volumes.files | length > 0"
+    fail_msg: "parameter 'volumes.files' is missing"
