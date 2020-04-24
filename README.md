@@ -73,4 +73,4 @@ Usage (with parameters):
 
 ## Links
 
-* [teamspean @ Docker Hub](https://hub.docker.com/_/teamspeak/)
+* [teamspeak @ Docker Hub](https://hub.docker.com/_/teamspeak/)

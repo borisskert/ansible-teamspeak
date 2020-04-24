@@ -3,12 +3,12 @@ set -e
 
 vagrant up --provision
 
+ansible-galaxy install -r requirements.yml -p ./roles --force
+
 echo "Waiting for answer on port 22..."
 while ! timeout 1 nc -z 192.168.33.48 22; do
   sleep 0.2
 done
-
-ansible-galaxy install -r requirements.yml -p ./roles --force
 
 ansible-playbook -i inventory.ini test.yml
 
