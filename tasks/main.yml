@@ -5,6 +5,7 @@
   docker_image:
     name: "{{docker_image.name}}:{{docker_image.tag}}"
     source: pull
+    state: present
   register: dockerimage
 
 - include: create-volumes.yml
@@ -15,7 +16,7 @@
     dest: "/etc/systemd/system/{{service_name}}.service"
     owner: root
     group: root
-    mode: 0640
+    mode: 0644
   register: systemd_unitfile
 
 - name: Reload systemd

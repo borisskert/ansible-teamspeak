@@ -5,7 +5,7 @@
     state: directory
     owner: "{{user_uid}}"
     group: "{{user_uid}}"
-    mode: 0755
+    mode: 0750
 
 - name: Create log volume directory
   file:
@@ -13,7 +13,7 @@
     state: directory
     owner: "{{user_uid}}"
     group: "{{user_uid}}"
-    mode: 0755
+    mode: 0750
 
 - name: Create files volume directory
   file:
@@ -21,4 +21,4 @@
     state: directory
     owner: "{{user_uid}}"
     group: "{{user_uid}}"
-    mode: 0755
+    mode: 0750

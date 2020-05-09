@@ -8,6 +8,7 @@ Requires=docker.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker rm -f %n
+ExecStartPre=/usr/bin/docker pull {{docker_image.name}}:{{docker_image.tag}}
 
 ExecStart=/usr/bin/docker run --name %n \
 {% if docker_container.volumes.data != "" %}
