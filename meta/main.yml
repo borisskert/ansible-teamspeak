@@ -3,12 +3,14 @@ galaxy_info:
   author: borisskert
   description: Installation role for teamspeak-server docker container
   min_ansible_version: 2.9
+  license: MIT
   platforms:
     - name: Ubuntu
       versions:
         - xenial
         - bionic
-  categories:
+        - focal
+  galaxy_tags:
     - development
     - packaging
     - system

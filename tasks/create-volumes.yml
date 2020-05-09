@@ -1,24 +1,24 @@
 ---
 - name: Create data volume directory
   file:
-    path: "{{volumes.data}}"
+    path: "{{ volumes.data }}"
     state: directory
-    owner: "{{user_uid}}"
-    group: "{{user_uid}}"
+    owner: "{{ user_uid }}"
+    group: "{{ user_uid }}"
     mode: 0750
 
 - name: Create log volume directory
   file:
-    path: "{{volumes.log}}"
+    path: "{{ volumes.log }}"
     state: directory
-    owner: "{{user_uid}}"
-    group: "{{user_uid}}"
+    owner: "{{ user_uid }}"
+    group: "{{ user_uid }}"
     mode: 0750
 
 - name: Create files volume directory
   file:
-    path: "{{volumes.files}}"
+    path: "{{ volumes.files }}"
     state: directory
-    owner: "{{user_uid}}"
-    group: "{{user_uid}}"
+    owner: "{{ user_uid }}"
+    group: "{{ user_uid }}"
     mode: 0750

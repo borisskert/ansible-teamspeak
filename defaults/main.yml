@@ -19,4 +19,4 @@ publish:
   # serverquery port (TCP incomming): 10011
   serverquery_port: ''
 
-accept_license: no
+accept_license: false
