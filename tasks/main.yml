@@ -28,6 +28,10 @@
   register: teamspeak_service
   changed_when: teamspeak_service.status.SubState != 'running'
   notify: Start teamspeak service
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - name: Start systemd-managed docker containers
   meta: flush_handlers

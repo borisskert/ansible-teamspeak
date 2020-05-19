@@ -1,0 +1,18 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: ansible-teamspeak
+      version: latest
+      accept_license: true
+      publish:
+        interface: 0.0.0.0
+        default_port: 9987
+        filetransfer_port: 30033
+        serverquery_port: 10011
+      volumes:
+        data: /srv/teamspeak/data
+        files: /srv/teamspeak/files
+        log: /var/log/teamspeak

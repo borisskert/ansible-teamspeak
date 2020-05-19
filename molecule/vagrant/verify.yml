@@ -1,0 +1,32 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should open 9987/udp port
+      command: nc -zu -w1 localhost 9987
+      changed_when: false
+      register: netcat_9987
+      retries: 300
+      delay: 1
+      until: netcat_9987 is defined
+        and netcat_9987.rc == 0
+
+    - name: Should open 10011/tcp port
+      command: nc -z -w1 localhost 10011
+      changed_when: false
+      register: netcat_10011
+      retries: 300
+      delay: 1
+      until: netcat_10011 is defined
+        and netcat_10011.rc == 0
+
+    - name: Should open 30033/tcp port
+      command: nc -z -w1 localhost 30033
+      changed_when: false
+      register: netcat_30033
+      retries: 300
+      delay: 1
+      until: netcat_30033 is defined
+        and netcat_30033.rc == 0
