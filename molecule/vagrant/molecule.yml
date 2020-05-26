@@ -18,18 +18,20 @@ platforms:
     box: ubuntu/focal64
   - name: ansible-teamspeak-stretch
     box: debian/stretch64
+    groups:
+      - debian
   - name: ansible-teamspeak-buster
     box: debian/buster64
+    groups:
+      - debian
 
 provisioner:
   name: ansible
   playbooks:
     prepare: ../shared/prepare.yml
   inventory:
-    host_vars:
-      ansible-teamspeak-stretch:
-        ansible_python_interpreter: /usr/bin/python3
-      ansible-teamspeak-buster:
+    group_vars:
+      debian:
         ansible_python_interpreter: /usr/bin/python3
 
 verifier:
