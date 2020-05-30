@@ -1,27 +1,21 @@
 ---
-- name: Check 'volumes' parameter
+- name: Check 'teamspeak_data_volume' parameter
   assert:
     that:
-      - "volumes is defined"
-    fail_msg: "parameter 'volumes' is missing"
+      - "teamspeak_data_volume is defined"
+      - "teamspeak_data_volume | length > 0"
+    fail_msg: "parameter 'teamspeak_data_volume' is missing"
 
-- name: Check 'volumes.data' parameter
+- name: Check 'teamspeak_log_volume' parameter
   assert:
     that:
-      - "volumes.data is defined"
-      - "volumes.data | length > 0"
-    fail_msg: "parameter 'volumes.data' is missing"
+      - "teamspeak_log_volume is defined"
+      - "teamspeak_log_volume | length > 0"
+    fail_msg: "parameter 'teamspeak_log_volume' is missing"
 
-- name: Check 'volumes.log' parameter
+- name: Check 'teamspeak_files_volume' parameter
   assert:
     that:
-      - "volumes.log is defined"
-      - "volumes.log | length > 0"
-    fail_msg: "parameter 'volumes.log' is missing"
-
-- name: Check 'volumes.files' parameter
-  assert:
-    that:
-      - "volumes.files is defined"
-      - "volumes.files | length > 0"
-    fail_msg: "parameter 'volumes.files' is missing"
+      - "teamspeak_files_volume is defined"
+      - "teamspeak_files_volume | length > 0"
+    fail_msg: "parameter 'teamspeak_files_volume' is missing"

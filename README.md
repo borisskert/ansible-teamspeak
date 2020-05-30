@@ -22,14 +22,14 @@ Installs teamspeak-server as docker container.
 
 | Variable      | Type | Mandatory? | Default | Description           |
 |---------------|------|------------|---------|-----------------------|
-| version       | text | no         | 3.3.1   | Teamspeak server version |
-| publish.interface | ip address | no | 0.0.0.0 | Mapped network for web-interface ports |
-| publish.default_port | port    | no | <empty> | Default port (UDP incomming): 9987     |
-| publish.filetransfer_port | port | no | <empty> | Filetransfer port (TCP incomming): 30033 |
-| publish.serverquery_port  | port | no | <empty> | Serverquery port (TCP incomming): 10011  |
-| volumes.data              | path | yes | <empty> | Path to data volume                     |
-| volumes.log               | path | yes | <empty> | Path to log volume                      |
-| volumes.files             | path | yes | <empty> | Path to files volume                    |
+| teamspeak_version       | text | no         | 3.3.1   | Teamspeak server version |
+| teamspeak_interface | ip address | no | 0.0.0.0 | Mapped network for web-interface ports |
+| teamspeak_port | port    | no | <empty> | Default port (UDP incomming): 9987     |
+| teamspeak_filestransfer_port | port | no | <empty> | Filetransfer port (TCP incomming): 30033 |
+| teamspeak_serverquery_port  | port | no | <empty> | Serverquery port (TCP incomming): 10011  |
+| teamspeak_data_volume              | path | yes | <empty> | Path to data volume                     |
+| teamspeak_log_volume               | path | yes | <empty> | Path to log volume                      |
+| teamspeak_files_volume             | path | yes | <empty> | Path to files volume                    |
 
 ## Usage
 
@@ -49,7 +49,7 @@ Usage (without parameters):
     - hosts: servers
       roles:
       - role: install-teamspeak
-        accept_license: yes
+        teamspeak_accept_license: yes
 ```
 
 Usage (with parameters):
@@ -58,17 +58,15 @@ Usage (with parameters):
     - hosts: servers
       roles:
       - role: install-teamspeak
-        version: 3.12
-        accept_license: yes
-        publish:
-          interface: 0.0.0.0
-          default_port: 9987
-          filetransfer_port: 30033
-          serverquery_port: 10011
-        volumes:
-          data: /srv/docker/teamspeak/data
-          files: /var/docker/teamspeak/files
-          log: /var/log/teamspeak
+        teamspeak_version: '3.12'
+        teamspeak_data_volume: /srv/teamspeak/data
+        teamspeak_log_volume: /var/log/teamspeak
+        teamspeak_files_volume: /srv/teamspeak/files
+        teamspeak_interface: 0.0.0.0
+        teamspeak_port: 9987
+        teamspeak_filestransfer_port: 30033
+        teamspeak_serverquery_port: 10011
+        teamspeak_accept_license: true
 ```
 
 ## Testing

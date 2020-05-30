@@ -1,22 +1,16 @@
 ---
-version: latest
-service_name: teamspeak
+teamspeak_version: latest
+teamspeak_service_name: teamspeak
 
-volumes:
-  data: ''
-  log: ''
-  files: ''
+teamspeak_data_volume: ''
+teamspeak_log_volume: ''
+teamspeak_files_volume: ''
 
-publish:
-  interface: 0.0.0.0
+teamspeak_interface: 0.0.0.0
+teamspeak_port: ''
+teamspeak_filestransfer_port: ''
+teamspeak_serverquery_port: ''
 
-  # default  port (UDP incomming): 9987
-  default_port: ''
+teamspeak_accept_license: false
 
-  # filetransfer port (TCP incomming): 30033
-  filetransfer_port: ''
-
-  # serverquery port (TCP incomming): 10011
-  serverquery_port: ''
-
-accept_license: false
+teamspeak_user_uid: '9987'

@@ -6,7 +6,7 @@
   tasks:
     - name: Should pull image
       docker_image:
-        name: teamspeak:latest
+        name: teamspeak:3.12
         source: pull
       register: docker_image
       failed_when: docker_image.changed
@@ -30,44 +30,39 @@
       failed_when: not log_volume.stat.exists
 
     - name: Should create sytemd unit file
-      stat:
+      copy:
         path: /etc/systemd/system/teamspeak.service
-        checksum_algorithm: sha256
+        content: |
+          [Install]
+          WantedBy=multi-user.target
+
+          [Unit]
+          Description=teamspeak service
+          After=docker.service
+          Requires=docker.service
+
+          [Service]
+          ExecStartPre=-/usr/bin/docker rm -f %n
+          ExecStartPre=/usr/bin/docker pull teamspeak:3.12
+
+          ExecStart=/usr/bin/docker run --name %n \
+          --volume /srv/teamspeak/data:/var/ts3server \
+          --volume /var/log/teamspeak:/var/ts3server/logs \
+          --volume /srv/teamspeak/files:/var/ts3server/files \
+          --publish 0.0.0.0:9987:9987/udp \
+          --publish 0.0.0.0:30033:30033/tcp \
+          --publish 0.0.0.0:10011:10011/tcp \
+          --env TS3SERVER_LICENSE=accept \
+          teamspeak:latest
+
+          ExecStop=-/usr/bin/docker stop %n
+          ExecStopPost=-/usr/bin/docker rm -f %n
+
+          Restart=always
+          RestartSec=60s
+          TimeoutSec=3600
       register: systemd_unit_file
-      # Expecting file to have content:
-      #  [Install]
-      #  WantedBy=multi-user.target
-      #
-      #  [Unit]
-      #  Description=teamspeak service
-      #  After=docker.service
-      #  Requires=docker.service
-      #
-      #  [Service]
-      #  ExecStartPre=-/usr/bin/docker rm -f %n
-      #  ExecStartPre=/usr/bin/docker pull teamspeak:latest
-      #
-      #  ExecStart=/usr/bin/docker run --name %n \
-      #  --volume /srv/teamspeak/data:/var/ts3server \
-      #  --volume /var/log/teamspeak:/var/ts3server/logs \
-      #  --volume /srv/teamspeak/files:/var/ts3server/files \
-      #  --publish 0.0.0.0:9987:9987/udp \
-      #  --publish 0.0.0.0:30033:30033/tcp \
-      #  --publish 0.0.0.0:10011:10011/tcp \
-      #  --env TS3SERVER_LICENSE=accept \
-      #  teamspeak:latest
-      #
-      #  ExecStop=-/usr/bin/docker stop %n
-      #  ExecStopPost=-/usr/bin/docker rm -f %n
-      #
-      #  Restart=always
-      #  RestartSec=60s
-      #  TimeoutSec=3600
-      failed_when: not (
-        systemd_unit_file.stat.exists
-        and systemd_unit_file.stat.checksum
-        == '1bcb15b5f774fd4d426c3d2912ec309e10ccfa3a69ca5577b745d693c713f903'
-        )
+      failed_when: systemd_unit_file.changed
 
   post_tasks:
     - name: Delete docker image

@@ -1,24 +1,24 @@
 ---
 - name: Create data volume directory
   file:
-    path: "{{ volumes.data }}"
+    path: "{{ teamspeak_data_volume }}"
     state: directory
-    owner: "{{ user_uid }}"
-    group: "{{ user_uid }}"
+    owner: "{{ teamspeak_user_uid }}"
+    group: "{{ teamspeak_user_uid }}"
     mode: 0750
 
 - name: Create log volume directory
   file:
-    path: "{{ volumes.log }}"
+    path: "{{ teamspeak_log_volume }}"
     state: directory
-    owner: "{{ user_uid }}"
-    group: "{{ user_uid }}"
+    owner: "{{ teamspeak_user_uid }}"
+    group: "{{ teamspeak_user_uid }}"
     mode: 0750
 
 - name: Create files volume directory
   file:
-    path: "{{ volumes.files }}"
+    path: "{{ teamspeak_files_volume }}"
     state: directory
-    owner: "{{ user_uid }}"
-    group: "{{ user_uid }}"
+    owner: "{{ teamspeak_user_uid }}"
+    group: "{{ teamspeak_user_uid }}"
     mode: 0750

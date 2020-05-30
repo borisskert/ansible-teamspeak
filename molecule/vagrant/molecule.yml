@@ -29,6 +29,7 @@ provisioner:
   name: ansible
   playbooks:
     prepare: ../shared/prepare.yml
+    converge: ../shared/converge.yml
   inventory:
     group_vars:
       debian:

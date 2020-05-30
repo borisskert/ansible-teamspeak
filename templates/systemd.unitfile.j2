@@ -2,37 +2,37 @@
 WantedBy=multi-user.target
 
 [Unit]
-Description={{service_name}} service
+Description={{teamspeak_service_name}} service
 After=docker.service
 Requires=docker.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker rm -f %n
-ExecStartPre=/usr/bin/docker pull {{docker_image.name}}:{{docker_image.tag}}
+ExecStartPre=/usr/bin/docker pull teamspeak:{{teamspeak_version}}
 
 ExecStart=/usr/bin/docker run --name %n \
-{% if docker_container.volumes.data != "" %}
-     --volume {{docker_container.volumes.data}}:/var/ts3server \
+{% if teamspeak_data_volume != "" %}
+     --volume {{teamspeak_data_volume}}:/var/ts3server \
 {% endif %}
-{% if docker_container.volumes.log != "" %}
-     --volume {{docker_container.volumes.log}}:/var/ts3server/logs \
+{% if teamspeak_log_volume != "" %}
+     --volume {{teamspeak_log_volume}}:/var/ts3server/logs \
 {% endif %}
-{% if docker_container.volumes.files != "" %}
-     --volume {{docker_container.volumes.files}}:/var/ts3server/files \
+{% if teamspeak_files_volume != "" %}
+     --volume {{teamspeak_files_volume}}:/var/ts3server/files \
 {% endif %}
-{% if docker_container.publish.ports.default != "" %}
-     --publish {{docker_container.publish.interface}}:{{docker_container.publish.ports.default}}:9987/udp \
+{% if teamspeak_port != "" %}
+     --publish {{teamspeak_interface}}:{{teamspeak_port}}:9987/udp \
 {% endif %}
-{% if docker_container.publish.ports.filetransfer != "" %}
-     --publish {{docker_container.publish.interface}}:{{docker_container.publish.ports.filetransfer}}:30033/tcp \
+{% if teamspeak_filestransfer_port != "" %}
+     --publish {{teamspeak_interface}}:{{teamspeak_filestransfer_port}}:30033/tcp \
 {% endif %}
-{% if docker_container.publish.ports.serverquery != "" %}
-     --publish {{docker_container.publish.interface}}:{{docker_container.publish.ports.serverquery}}:10011/tcp \
+{% if teamspeak_serverquery_port != "" %}
+     --publish {{teamspeak_interface}}:{{teamspeak_serverquery_port}}:10011/tcp \
 {% endif %}
-{% if accept_license | bool %}
+{% if teamspeak_accept_license | bool %}
      --env TS3SERVER_LICENSE=accept \
 {% endif %}
-            {{docker_image.name}}:{{docker_image.tag}}
+            teamspeak:{{teamspeak_version}}
 
 ExecStop=-/usr/bin/docker stop %n
 ExecStopPost=-/usr/bin/docker rm -f %n

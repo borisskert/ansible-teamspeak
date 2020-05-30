@@ -3,7 +3,7 @@
 
 - name: pull docker image
   docker_image:
-    name: "{{ docker_image.name }}:{{ docker_image.tag }}"
+    name: "teamspeak:{{ teamspeak_version }}"
     source: pull
     state: present
   notify: Restart teamspeak service
@@ -13,7 +13,7 @@
 - name: Create systemd unit file
   template:
     src: systemd.unitfile.j2
-    dest: "/etc/systemd/system/{{ service_name }}.service"
+    dest: "/etc/systemd/system/{{ teamspeak_service_name }}.service"
     owner: root
     group: root
     mode: 0644
@@ -25,7 +25,7 @@
 
 - name: Enable service (if not started)
   service:
-    name: "{{ service_name }}"
+    name: "{{ teamspeak_service_name }}"
     enabled: true
     state: started
   when: not (
