@@ -1,14 +1,7 @@
 ---
-- include: check-parameters.yml
+- include_tasks: check-parameters.yml
 
-- name: pull docker image
-  docker_image:
-    name: "teamspeak:{{ teamspeak_version }}"
-    source: pull
-    state: present
-  notify: Restart teamspeak service
-
-- include: create-volumes.yml
+- include_tasks: create-volumes.yml
 
 - name: Create systemd unit file
   template:
