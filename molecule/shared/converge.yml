@@ -5,7 +5,7 @@
 
   roles:
     - role: ansible-teamspeak
-      teamspeak_version: '3.12'
+      teamspeak_version: '3.13.7' # Always try to use the latest version, otherwise you may experience "license outdated" issues
       teamspeak_data_volume: /srv/teamspeak/data
       teamspeak_log_volume: /var/log/teamspeak
       teamspeak_files_volume: /srv/teamspeak/files

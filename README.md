@@ -20,16 +20,16 @@ Installs teamspeak-server as docker container.
 
 ## Role parameters
 
-| Variable      | Type | Mandatory? | Default | Description           |
-|---------------|------|------------|---------|-----------------------|
-| teamspeak_version       | text | no         | 3.3.1   | Teamspeak server version |
-| teamspeak_interface | ip address | no | 0.0.0.0 | Mapped network for web-interface ports |
-| teamspeak_port | port    | no | <empty> | Default port (UDP incomming): 9987     |
-| teamspeak_filestransfer_port | port | no | <empty> | Filetransfer port (TCP incomming): 30033 |
-| teamspeak_serverquery_port  | port | no | <empty> | Serverquery port (TCP incomming): 10011  |
-| teamspeak_data_volume              | path | yes | <empty> | Path to data volume                     |
-| teamspeak_log_volume               | path | yes | <empty> | Path to log volume                      |
-| teamspeak_files_volume             | path | yes | <empty> | Path to files volume                    |
+| Variable                     | Type       | Mandatory? | Default | Description                              |
+|------------------------------|------------|------------|---------|------------------------------------------|
+| teamspeak_version            | text       | no         | 3.3.1   | Teamspeak server version                 |
+| teamspeak_interface          | ip address | no         | 0.0.0.0 | Mapped network for web-interface ports   |
+| teamspeak_port               | port       | no         | <empty> | Default port (UDP incomming): 9987       |
+| teamspeak_filestransfer_port | port       | no         | <empty> | Filetransfer port (TCP incomming): 30033 |
+| teamspeak_serverquery_port   | port       | no         | <empty> | Serverquery port (TCP incomming): 10011  |
+| teamspeak_data_volume        | path       | yes        | <empty> | Path to data volume                      |
+| teamspeak_log_volume         | path       | yes        | <empty> | Path to log volume                       |
+| teamspeak_files_volume       | path       | yes        | <empty> | Path to files volume                     |
 
 ## Usage
 
@@ -94,7 +94,7 @@ molecule test
 ```
 
 I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing.
-Within the Github Actions pipeline I use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).
+Within the GitHub Actions pipeline I use [my own molecule action](https://github.com/borisskert/molecule-action).
 
 ## Links
 

@@ -10,18 +10,18 @@ driver:
     name: virtualbox
 
 platforms:
-  - name: ansible-teamspeak-xenial
-    box: ubuntu/xenial64
-  - name: ansible-teamspeak-bionic
-    box: ubuntu/bionic64
+  - name: ansible-teamspeak-noble
+    box: cloud-image/ubuntu-24.04
+  - name: ansible-teamspeak-jammy
+    box: cloud-image/ubuntu-22.04
   - name: ansible-teamspeak-focal
-    box: ubuntu/focal64
-  - name: ansible-teamspeak-stretch
-    box: debian/stretch64
+    box: cloud-image/ubuntu-20.04
+  - name: ansible-teamspeak-bookworm
+    box: cloud-image/debian-12
     groups:
       - debian
-  - name: ansible-teamspeak-buster
-    box: debian/buster64
+  - name: ansible-teamspeak-bullseye
+    box: cloud-image/debian-11
     groups:
       - debian
 
